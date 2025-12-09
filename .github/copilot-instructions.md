@@ -70,7 +70,7 @@ The backend requires these environment variables (see `backend/.env.example`):
 
 - `PORT` - Server port (default: 3001)
 - `NODE_ENV` - Environment (development/production)
-- `PUBLISH_ASSETS_DIR` - Path to frontend build (../frontend/dist)
+- `PUBLISH_ASSETS_DIR` - Relative path from backend directory to frontend build (../frontend/dist)
 - API keys for AI services (SORA_API_KEY, RUNWAY_API_KEY, NARRATOR_API_KEY)
 - TikTok API credentials (TIKTOK_ACCESS_TOKEN, TIKTOK_CLIENT_KEY, etc.)
 - Trends provider configuration
@@ -120,10 +120,13 @@ npm run start
 
 The project is designed for Railway/Render deployment:
 
-1. Build command: `npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend`
-2. Start command: `cd backend && npm run start`
-3. Set all required environment variables in the hosting platform
-4. Backend serves the built frontend from `PUBLISH_ASSETS_DIR`
+1. The `railway.json` file configures the deployment with Nixpacks builder
+2. Build phase: Railway automatically installs dependencies and builds the frontend
+3. Start command (configured in railway.json): `cd backend && npm run start`
+4. Set all required environment variables in the hosting platform
+5. Backend serves the built frontend from `PUBLISH_ASSETS_DIR`
+
+Note: The repository uses the `autopublish_cloud_project_railway` directory structure, which contains both backend and frontend subdirectories.
 
 ## Security Best Practices
 
