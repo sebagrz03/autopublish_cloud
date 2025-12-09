@@ -7,7 +7,11 @@ const __dirname = path.dirname(__filename);
 
 const DATA_PATH = path.join(__dirname, "..", "..", "data.json");
 
-// In-memory cache to avoid repeated file I/O operations
+/**
+ * Simple in-memory cache to avoid repeated file I/O operations.
+ * This significantly improves performance for read-heavy workloads.
+ * Note: This cache is per-process. In a distributed setup, consider Redis or similar.
+ */
 let cache = null;
 let isLoading = false;
 
