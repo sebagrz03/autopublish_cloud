@@ -9,12 +9,20 @@ const DATA_PATH = path.join(__dirname, "..", "..", "data.json");
 
 // In-memory cache to avoid repeated file I/O operations
 let cache = null;
+let isLoading = false;
 
 function load() {
   if (cache !== null) {
     return cache;
   }
   
+  // Simple loading flag to minimize concurrent file reads
+  if (isLoading) {
+    // Wait a bit and try again if another load is in progress
+    return cache || { jobs: [] };
+  }
+  
+  isLoading = true;
   try {
     const raw = fs.readFileSync(DATA_PATH, "utf-8");
     cache = JSON.parse(raw);
@@ -22,6 +30,8 @@ function load() {
   } catch (e) {
     cache = { jobs: [] };
     return cache;
+  } finally {
+    isLoading = false;
   }
 }
 

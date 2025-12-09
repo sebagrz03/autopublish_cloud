@@ -76,11 +76,15 @@ export default function App() {
   useEffect(() => {
     loadHealth();
     loadJobs();
-    // Only poll when user is on dashboard or jobs page
-    const shouldPoll = nav === "dashboard" || nav === "jobs";
-    if (!shouldPoll) return;
     
-    const interval = setInterval(loadJobs, 10000); // Increased from 8s to 10s
+    // Polling interval that checks if polling should be active
+    const interval = setInterval(() => {
+      const shouldPoll = nav === "dashboard" || nav === "jobs";
+      if (shouldPoll) {
+        loadJobs();
+      }
+    }, 10000); // Increased from 8s to 10s
+    
     return () => clearInterval(interval);
   }, [nav]);
 
